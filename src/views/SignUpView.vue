@@ -58,7 +58,7 @@
             onclick="javascript:location.href='#todoListPage'"
             value="註冊帳號"
           />
-          <a class="formControls_btnLink" href="#loginPage">登入</a>
+          <router-link class="formControls_btnLink" to="/">登入</router-link>
         </form>
       </div>
     </div>

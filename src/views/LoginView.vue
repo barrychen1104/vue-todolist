@@ -25,8 +25,9 @@
             name="email"
             placeholder="請輸入 email"
             required
+            v-model="signinField.email"
           />
-          <span>此欄位不可留空</span>
+          <span>{{ errorMsg.email }}</span>
           <label class="formControls_label" for="pwd">密碼</label>
           <input
             class="formControls_input"
@@ -35,16 +36,66 @@
             id="pwd"
             placeholder="請輸入密碼"
             required
+            v-model="signinField.password"
           />
-          <input
-            class="formControls_btnSubmit"
-            type="button"
-            onclick="javascript:location.href='#todoListPage'"
-            value="登入"
-          />
-          <a class="formControls_btnLink" href="#signUpPage">註冊帳號</a>
+          <span>{{ errorMsg.password }}</span>
+          <input class="formControls_btnSubmit" type="button" @click="signin" value="登入" />
+          <router-link class="formControls_btnLink" to="/signup">註冊帳號</router-link>
         </form>
       </div>
     </div>
   </div>
 </template>
+<script setup>
+import { ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import axios from 'axios'
+
+const router = useRouter()
+
+const apiUrl = 'https://todolist-api.hexschool.io'
+
+const signinField = ref({
+  email: '',
+  password: ''
+})
+const signinRes = ref('')
+const errorMsg = ref({
+  email: '',
+  password: '',
+  response: ''
+})
+
+watch(
+  signinField,
+  (newVal) => {
+    if (!newVal.email) {
+      errorMsg.value.email = '此欄位不可為空'
+    } else {
+      errorMsg.value.email = ''
+    }
+
+    if (!newVal.password) {
+      errorMsg.value.password = '此欄位不可為空'
+    } else {
+      errorMsg.value.password = ''
+    }
+  },
+  { deep: true, immediate: true }
+)
+
+const signin = async () => {
+  try {
+    const res = await axios.post(`${apiUrl}/users/sign_in`, signinField.value)
+    signinRes.value = res.data.token
+
+    const expires = new Date()
+    expires.setDate(expires.getDate() + 1)
+    document.cookie = `customTodoToken=${res.data.token}; expires=${expires.toUTCString()};`
+    router.push('/todolist')
+  } catch (err) {
+    errorMsg.value.response = '帳號或密碼錯誤'
+    alert('帳號或密碼錯誤')
+  }
+}
+</script>

@@ -25,7 +25,9 @@
             name="email"
             placeholder="請輸入 email"
             required
+            v-model="signupField.email"
           />
+          <span>{{ errorMsg.email }}</span>
           <label class="formControls_label" for="name">您的暱稱</label>
           <input
             class="formControls_input"
@@ -33,7 +35,10 @@
             name="name"
             id="name"
             placeholder="請輸入您的暱稱"
+            required
+            v-model="signupField.nickname"
           />
+          <span>{{ errorMsg.nickname }}</span>
           <label class="formControls_label" for="pwd">密碼</label>
           <input
             class="formControls_input"
@@ -42,7 +47,9 @@
             id="pwd"
             placeholder="請輸入密碼"
             required
+            v-model="signupField.password"
           />
+          <span>{{ errorMsg.password }}</span>
           <label class="formControls_label" for="pwd">再次輸入密碼</label>
           <input
             class="formControls_input"
@@ -51,16 +58,56 @@
             id="pwd"
             placeholder="請再次輸入密碼"
             required
+            v-model="signupField.passwordCheck"
           />
-          <input
-            class="formControls_btnSubmit"
-            type="button"
-            onclick="javascript:location.href='#todoListPage'"
-            value="註冊帳號"
-          />
+          <span>{{ errorMsg.passwordCheck }}</span>
+          <input class="formControls_btnSubmit" type="button" @click="signup" value="註冊帳號" />
           <router-link class="formControls_btnLink" to="/">登入</router-link>
         </form>
       </div>
     </div>
   </div>
 </template>
+<script setup>
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import axios from 'axios'
+
+const router = useRouter()
+
+const apiUrl = 'https://todolist-api.hexschool.io'
+
+const signupField = ref({
+  email: '',
+  nickname: '',
+  password: '',
+  passwordCheck: ''
+})
+
+const validateEmail = (email) => {
+  const re = /\S+@\S+\.\S+/
+  return re.test(email)
+}
+
+const errorMsg = computed(() => {
+  return {
+    email: validateEmail(signupField.value.email) ? '' : 'Email 格式錯誤',
+    nickname: signupField.value.nickname ? '' : '此欄位不可為空',
+    password: signupField.value.password.length >= 6 ? '' : '密碼長度不足',
+    passwordCheck:
+      signupField.value.password === signupField.value.passwordCheck ? '' : '密碼不一致'
+  }
+})
+
+const signup = async () => {
+  try {
+    const res = await axios.post(`${apiUrl}/users/sign_up`, signupField.value)
+    if (res.data.status) {
+      alert('註冊成功，請登入')
+    }
+    router.push('/')
+  } catch (error) {
+    alert('註冊失敗')
+  }
+}
+</script>

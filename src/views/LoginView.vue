@@ -47,7 +47,7 @@
   </div>
 </template>
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 
@@ -60,29 +60,12 @@ const signinField = ref({
   password: ''
 })
 const signinRes = ref('')
-const errorMsg = ref({
-  email: '',
-  password: '',
-  response: ''
+const errorMsg = computed(() => {
+  return {
+    email: signinField.value.email ? '' : '此欄位不可為空',
+    password: signinField.value.password ? '' : '此欄位不可為空'
+  }
 })
-
-watch(
-  signinField,
-  (newVal) => {
-    if (!newVal.email) {
-      errorMsg.value.email = '此欄位不可為空'
-    } else {
-      errorMsg.value.email = ''
-    }
-
-    if (!newVal.password) {
-      errorMsg.value.password = '此欄位不可為空'
-    } else {
-      errorMsg.value.password = ''
-    }
-  },
-  { deep: true, immediate: true }
-)
 
 const signin = async () => {
   try {

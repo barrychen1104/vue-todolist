@@ -107,7 +107,8 @@ const signup = async () => {
     }
     router.push('/')
   } catch (error) {
-    alert('註冊失敗')
+    console.log(error)
+    alert('註冊失敗: ' + error.response.data.message)
   }
 }
 </script>

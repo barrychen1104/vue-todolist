@@ -610,4 +610,11 @@ nav ul a span {
   font-size: 0.875rem;
   text-decoration: none;
 }
+
+.todoList_empty {
+  text-align: center;
+  color: #888;
+  font-size: 1.2em;
+  margin-top: 20px;
+}
 /*# sourceMappingURL=all.css.map */

@@ -1,3 +1,4 @@
+```vue
 <template>
   <div id="todoListPage" class="bg-half">
     <nav>
@@ -14,7 +15,7 @@
     <div class="conatiner todoListPage vhContainer">
       <div class="todoList_Content">
         <div class="inputBox">
-          <input type="text" placeholder="請輸入待辦事項" v-model="addTodoField" />
+          <input type="text" placeholder="請輸入待辦事項" v-model="addTodoField.content" required />
           <a href="#" @click.prevent="addTodo">
             <i class="fa fa-plus"></i>
           </a>
@@ -60,12 +61,18 @@
                 </a>
               </li>
             </ul>
-            <div class="todoList_statistics">
-              <p>{{ completedCount }}個已完成項目</p>
+            <div v-if="todos.length === 0" class="todoList_empty">
+              <p>目前尚無待辦事項</p>
+            </div>
+            <div v-if="todos.length > 0" class="todoList_statistics">
+              <p>{{ activeCount }}個待完成項目</p>
             </div>
           </div>
         </div>
       </div>
+    </div>
+    <div v-if="isLoading" class="loading-overlay">
+      <div class="loading-spinner"></div>
     </div>
   </div>
 </template>
@@ -84,11 +91,14 @@ const user = ref({
   uid: ''
 })
 const todos = ref([])
-const addTodoField = ref('')
+const addTodoField = ref({
+  content: ''
+})
 const filter = ref('all')
+const isLoading = ref(false)
 
-const completedCount = computed(() => {
-  return todos.value.filter((todo) => todo.status).length
+const activeCount = computed(() => {
+  return todos.value.filter((todo) => !todo.status).length
 })
 
 const filteredTodos = computed(() => {
@@ -105,11 +115,13 @@ const filteredTodos = computed(() => {
 })
 
 const setFilter = (newFilter) => {
+  if (isLoading.value) return
   filter.value = newFilter
 }
 
 const getTodos = async () => {
   try {
+    isLoading.value = true
     const res = await axios.get(`${apiUrl}/todos/`, {
       headers: {
         authorization: token.value
@@ -118,31 +130,31 @@ const getTodos = async () => {
     todos.value = res.data.data
   } catch (err) {
     console.log('err', err)
+  } finally {
+    isLoading.value = false
   }
 }
 
 const addTodo = async () => {
   try {
-    await axios.post(
-      `${apiUrl}/todos/`,
-      {
-        content: addTodoField.value
-      },
-      {
-        headers: {
-          authorization: token.value
-        }
+    isLoading.value = true
+    await axios.post(`${apiUrl}/todos/`, addTodoField.value, {
+      headers: {
+        authorization: token.value
       }
-    )
-    addTodoField.value = ''
+    })
+    addTodoField.value.content = ''
     await getTodos()
   } catch (err) {
     console.log('err', err)
+  } finally {
+    isLoading.value = false
   }
 }
 
 const signOut = async () => {
   try {
+    isLoading.value = true
     await axios.post(`${apiUrl}/users/sign_out`, null, {
       headers: {
         authorization: token.value
@@ -152,11 +164,14 @@ const signOut = async () => {
     router.push('/')
   } catch (err) {
     console.log('err', err)
+  } finally {
+    isLoading.value = false
   }
 }
 
 const toggleStatus = async (id) => {
   try {
+    isLoading.value = true
     await axios.patch(`${apiUrl}/todos/${id}/toggle`, null, {
       headers: {
         authorization: token.value
@@ -165,11 +180,14 @@ const toggleStatus = async (id) => {
     await getTodos()
   } catch (err) {
     console.log('err', err)
+  } finally {
+    isLoading.value = false
   }
 }
 
 const deleteTodo = async (id) => {
   try {
+    isLoading.value = true
     await axios.delete(`${apiUrl}/todos/${id}`, {
       headers: {
         authorization: token.value
@@ -178,6 +196,8 @@ const deleteTodo = async (id) => {
     await getTodos()
   } catch (err) {
     console.log('err', err)
+  } finally {
+    isLoading.value = false
   }
 }
 
@@ -192,6 +212,7 @@ onMounted(async () => {
     router.push('/')
   }
   try {
+    isLoading.value = true
     const res = await axios.get(`${apiUrl}/users/checkout`, {
       headers: {
         authorization: token.value
@@ -201,9 +222,43 @@ onMounted(async () => {
     await getTodos()
   } catch (err) {
     console.log('err', err)
-
     alert('請重新登入')
     router.push('/')
+  } finally {
+    isLoading.value = false
   }
 })
 </script>
+
+<style scoped>
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loading-spinner {
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #3498db;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>

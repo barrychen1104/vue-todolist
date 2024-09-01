@@ -1,0 +1,1 @@
+import{u as t,i as e,o as s,b as n,d as u}from"./index-MKVeIeBw.js";const a={class:"notFound"},c=u("h1",null,"404 Not Found",-1),_=[c],p={__name:"NotFound",setup(r){const o=t();return e(()=>{setTimeout(()=>{o.push("/")},1e3)}),(d,i)=>(s(),n("div",a,_))}};export{p as default};

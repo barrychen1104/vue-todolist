@@ -1,0 +1,1 @@
+import{u as t,h as e,o as s,b as n,d as u}from"./index-C4SxC3VC.js";const a={class:"notFound"},c=u("h1",null,"404 Not Found",-1),_=[c],l={__name:"NotFound",setup(r){const o=t();return e(()=>{setTimeout(()=>{o.push("/")},1e3)}),(d,h)=>(s(),n("div",a,_))}};export{l as default};

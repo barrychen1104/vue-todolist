@@ -11,7 +11,7 @@
         <img
           class="d-m-n"
           src="https://raw.githubusercontent.com/hexschool/2022-web-layout-training/main/todolist/img.png"
-          alt="workImg"
+            alt="workImg"
         />
       </div>
       <div>
@@ -41,6 +41,7 @@
           <span>{{ errorMsg.password }}</span>
           <input class="formControls_btnSubmit" type="button" @click="signin" value="登入" />
           <router-link class="formControls_btnLink" to="/signup">註冊帳號</router-link>
+          <router-link class="formControls_btnLink" to="/reset-password">忘記密碼?</router-link>
         </form>
       </div>
     </div>

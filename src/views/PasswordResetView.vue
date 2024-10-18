@@ -2,12 +2,13 @@
   <div id="passwordResetPage" class="bg-yellow">
     <div class="container passwordResetPage vhContainer">
       <div class="side">
-        <a href="#"
-          ><img
+        <a href="#">
+          <img
             class="logoImg"
             src="https://raw.githubusercontent.com/hexschool/2022-web-layout-training/main/todolist/logo.png"
             alt=""
-        /></a>
+          />
+        </a>
         <img
           class="d-m-n"
           src="https://raw.githubusercontent.com/hexschool/2022-web-layout-training/main/todolist/img.png"

@@ -19,6 +19,16 @@ const router = createRouter({
       name: 'todolist',
       component: () => import('../views/TodoListView.vue')
     },
+    {
+      path: '/reset-password',
+      name: 'reset-password',
+      component: () => import('../views/ResetPasswordView.vue')
+    },
+    {
+      path: '/password-reset',
+      name: 'password-reset',
+      component: () => import('../views/PasswordResetView.vue')
+    },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('../views/NotFound.vue') }
   ]
 })

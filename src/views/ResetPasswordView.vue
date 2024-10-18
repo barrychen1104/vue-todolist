@@ -1,6 +1,6 @@
 <template>
   <div id="resetPasswordPage" class="bg-yellow">
-    <div class="container resetPasswordPage vhContainer">
+    <div class="conatiner resetPasswordPage vhContainer">
       <div class="side">
         <a href="#"
           ><img

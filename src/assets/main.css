@@ -380,9 +380,12 @@ nav ul a span {
   font-weight: bold;
   text-decoration: none;
   text-align: center;
+  margin-top: 5px;
 }
 
-.loginPage {
+.loginPage,
+.resetPasswordPage,
+.passwordResetPage {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -396,7 +399,9 @@ nav ul a span {
 }
 
 @media (max-width: 576px) {
-  .loginPage {
+  .loginPage,
+  .passwordResetPage,
+  .resetPasswordPage {
     width: 100%;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
@@ -618,59 +623,4 @@ nav ul a span {
   font-size: 1.2em;
   margin-top: 20px;
 }
-
-.resetPasswordPage {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  width: 800px;
-}
-
-@media (max-width: 576px) {
-  .resetPasswordPage {
-    width: 100%;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    margin: 0 auto;
-    padding: 48px 31px;
-    -webkit-box-pack: start;
-    -ms-flex-pack: start;
-    justify-content: start;
-  }
-}
-
-.passwordResetPage {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  width: 800px;
-}
-
-@media (max-width: 576px) {
-  .passwordResetPage {
-    width: 100%;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    margin: 0 auto;
-    padding: 48px 31px;
-    -webkit-box-pack: start;
-    -ms-flex-pack: start;
-    justify-content: start;
-  }
-}
+/*# sourceMappingURL=all.css.map */

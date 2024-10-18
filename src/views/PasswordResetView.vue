@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import axios from 'axios'
 
@@ -78,4 +78,12 @@ const resetPassword = async () => {
     errorMsg.value = '重設失敗，請重試'
   }
 }
+
+onMounted(() => {
+  const token = route.query.token
+  if (!token) {
+    alert('無效的重設密碼連結')
+    router.push('/')
+  }
+})
 </script>
